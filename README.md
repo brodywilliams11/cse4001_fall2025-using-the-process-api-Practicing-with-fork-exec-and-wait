@@ -57,46 +57,45 @@ The child and parent each get their own copy of x. If it is changed in one proce
 
 2. Write a program that opens a file (with the `open()` system call) and then calls `fork()` to create a new process. Can both the child and parent access the file descriptor returned by `open()`? What happens when they are writing to the file concurrently, i.e., at the same time?
 
-
-<img width="1239" height="564" alt="Screenshot 2025-09-24 223755" src="https://github.com/user-attachments/assets/181a18d4-331c-4cd7-9ef9-a6241a48b795" />
-Both parent and child share the same file descriptor. If they write at the same time, the <img width="1250" height="571" alt="Screenshot 2025-09-24 223814" src="https://github.com/user-attachments/assets/9cfbc520-7070-4a39-80f1-8d5ec0190471" />
-output might interleave. 
-
+--
+<img width="1239" height="564" alt="Screenshot 2025-09-24 223755" src="https://github.com/user-attachments/assets/833ecde2-6c70-4f0b-bdf1-45f332b0e8ef" />
+Both parent and child share the same file descriptor. If they write at the same time, the output might interleave. 
+--
 
 3. Write another program using `fork()`.The child process should print “hello”; the parent process should print “goodbye”. You should try to ensure that the child process always prints first; can you do this without calling `wait()` in the parent?
 
-
-![Uploading Screenshot 2025-09-24 223814.png…]()
+--
+<img width="1250" height="571" alt="Screenshot 2025-09-24 223814" src="https://github.com/user-attachments/assets/885363a3-dc6c-4de1-a20e-1ea8a382a17c" />
 The parent and child may print in any order but if you use sleep(), the child will print first.
-
+--
 
 
 4. Write a program that calls `fork()` and then calls some form of `exec()` to run the program `/bin/ls`. See if you can try all of the variants of `exec()`, including (on Linux) `execl()`, `execle()`, `execlp()`, `execv()`, `execvp()`, and `execvpe()`. Why do you think there are so many variants of the same basic call?
 
-
+--
 <img width="1251" height="577" alt="Screenshot 2025-09-24 223832" src="https://github.com/user-attachments/assets/d2944deb-ed16-4ea7-9439-7d5d20c440f9" />
 exec() replaces the current process with a new program and the variants exist to provide flexibility in passing arguments. 
-
+--
 
 5. Now write a program that uses `wait()` to wait for the child process to finish in the parent. What does `wait()` return? What happens if you use `wait()` in the child?
 
-
+--
  <img width="1255" height="569" alt="Screenshot 2025-09-24 223846" src="https://github.com/user-attachments/assets/490a5219-d805-4fce-b760-a5919b58a562" />
 wait() blocks the parent until a child finishes and returns the child's PID. If a child calls it, then it fails because it has no children. 
-
+--
 
 6. Write a slight modification of the previous program, this time using `waitpid()` instead of `wait()`. When would `waitpid()` be useful?
 
-
+--
  <img width="1374" height="576" alt="Screenshot 2025-09-24 224142" src="https://github.com/user-attachments/assets/9fe5f766-9fa7-4ed9-8f46-2350800f018f" />
 <img width="1397" height="566" alt="Screenshot 2025-09-24 224155" src="https://github.com/user-attachments/assets/57900f24-6139-4f9b-903d-fecbe74a47b1" />
 waitpid() lets the parent wait for a specific child which is useful when multiple children are running. 
-
+--
 
 7. Write a program that creates a child process, and then in the child closes standard output (`STDOUT FILENO`). What happens if the child calls `printf()` to print some output after closing the descriptor?
 
-
+--
 <img width="1407" height="577" alt="Screenshot 2025-09-24 224218" src="https://github.com/user-attachments/assets/929f377f-cfa6-40d0-b208-d56fe4a8cc56" />
 Closing STDOUT in the child prevents it from printing anything but the parent's output is unaffected. 
-
+--
 
